@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MultiClock</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://i.pinimg.com/736x/78/37/a7/7837a726900c275f04b417187e95e46a.jpg" type="image/jpeg">
+  <style>
+    :root {
+      --color-tarjeta: #00cec9;
+      --color-borde: #00cec9;
+      --color-texto-secundario: #ffffffaa;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #1e272e, #2c3e50);
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .zonas-secundarias {
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      font-size: 0.85em;
+      color: var(--color-texto-secundario);
+    }
+
+    .zona-secundaria {
+      text-align: center;
+    }
+
+    .zona-secundaria span {
+      display: block;
+      font-size: 1em;
+      color: white;
+      font-weight: bold;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .titulo-principal {
+      margin-top: 100px;
+      margin-bottom: 20px;
+      font-size: 2em;
+      font-family: 'Orbitron', sans-serif;
+      color: white;
+      letter-spacing: 1px;
+    }
+
+    .reloj-contenedor {
+      border: 2px solid var(--color-borde);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 25px 30px;
+      border-radius: 20px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .tarjeta {
+      background-color: var(--color-tarjeta);
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+      width: 80px;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5em;
+      font-weight: bold;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .puntos {
+      font-size: 2.5em;
+      color: white;
+      font-weight: bold;
+      padding: 0 10px;
+    }
+
+    .ampm {
+      background-color: var(--color-tarjeta);
+      border-radius: 12px;
+      width: 60px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 10px;
+      font-size: 1em;
+      font-weight: bold;
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="zonas-secundarias">
+    <div class="zona-secundaria">
+      Pacífico<br><span id="pacifico">00:00:00 AM</span>
+    </div>
+    <div class="zona-secundaria">
+      Este<br><span id="este">00:00:00 AM</span>
+    </div>
+  </div>
+
+  <div class="titulo-principal">Guatemala</div>
+
+  <div class="reloj-contenedor">
+    <div class="tarjeta" id="hora">00</div>
+    <div class="puntos">:</div>
+    <div class="tarjeta" id="minuto">00</div>
+    <div class="puntos">:</div>
+    <div class="tarjeta" id="segundo">00</div>
+    <div class="ampm" id="ampm">AM</div>
+  </div>
+
+  <script>
+    function updateClocks() {
+      const zonas = {
+        guatemala: 'America/Guatemala',
+        pacifico: 'America/Los_Angeles',
+        este: 'America/New_York'
+      };
+
+      const format = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+
+      const ahoraGuate = new Intl.DateTimeFormat('es-ES', { ...format, timeZone: zonas.guatemala }).format(new Date());
+      const [hGuate, mGuate, sGuate, ampmGuate] = ahoraGuate.replace(/:/g, ' ').split(' ');
+
+      document.getElementById('hora').textContent = hGuate;
+      document.getElementById('minuto').textContent = mGuate;
+      document.getElementById('segundo').textContent = sGuate;
+      document.getElementById('ampm').textContent = ampmGuate;
+
+      const pac = new Intl.DateTimeFormat('es-ES', { ...format, timeZone: zonas.pacifico }).format(new Date());
+      const est = new Intl.DateTimeFormat('es-ES', { ...format, timeZone: zonas.este }).format(new Date());
+
+      document.getElementById('pacifico').textContent = pac;
+      document.getElementById('este').textContent = est;
+    }
+
+    setInterval(updateClocks, 1000);
+    updateClocks();
+  </script>
+
+</body>
+</html>
