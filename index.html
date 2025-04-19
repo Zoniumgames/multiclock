@@ -2,176 +2,318 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Reloj Futurista</title>
-  <link rel="icon" href="https://i.pinimg.com/736x/78/37/a7/7837a726900c275f04b417187e95e46a.jpg" type="image/jpeg">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MultiClock</title>
+  <link rel="icon" href="https://i.pinimg.com/736x/78/37/a7/7837a726900c275f04b417187e95e46a.jpg">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/tron" rel="stylesheet">
+
   <style>
     :root {
-      --color-tarjeta: #00cec9;
-      --color-borde: #00cec9;
-      --color-texto-secundario: #ffffffaa;
+      --primary: #222;
+      --secondary: #444;
+      --accent: #00f0ff;
+      --text: #fff;
+      --font-main: 'Share Tech Mono', monospace;
+      --font-title: 'Orbitron', sans-serif;
     }
 
     body {
       margin: 0;
-      padding: 0;
+      background: var(--primary);
+      color: var(--text);
+      font-family: var(--font-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       height: 100vh;
-      background: linear-gradient(135deg, #1e272e, #2c3e50);
-      font-family: 'Poppins', sans-serif;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      overflow: hidden;
+      position: relative;
+      transition: background 0.5s ease;
     }
 
-    .zonas-secundarias {
+    .timezone-row {
       position: absolute;
-      top: 10px;
-      width: 100%;
+      top: 20px;
       display: flex;
-      justify-content: center;
-      gap: 80px;
-      font-size: 0.85em;
-      color: var(--color-texto-secundario);
-      z-index: 1;
+      gap: 1rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
     }
 
-    .zona-secundaria {
-      text-align: center;
+    .timezone {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.3rem 0.6rem;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      backdrop-filter: blur(4px);
     }
 
-    .zona-secundaria span {
-      display: block;
-      font-size: 1em;
-      color: white;
-      font-weight: bold;
-      font-family: 'Poppins', sans-serif;
+    h1.title {
+      font-family: var(--font-title);
+      margin: 0.5rem 0;
+      font-size: 1.8rem;
+      color: var(--accent);
+      transition: font-family 0.3s ease;
     }
 
-    .contenedor-central {
-      flex: 1;
+    .reloj-container {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 0;
-    }
-
-    .titulo-principal {
-      font-size: 2em;
-      font-family: 'Orbitron', sans-serif;
-      color: white;
-      letter-spacing: 1px;
-      margin-bottom: 20px;
-    }
-
-    .reloj-contenedor {
-      border: 2px solid var(--color-borde);
-      background: rgba(255, 255, 255, 0.05);
-      padding: 25px 30px;
+      gap: 0.5rem;
+      padding: 1rem;
       border-radius: 20px;
-      display: flex;
-      gap: 15px;
-      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+      animation: pulse 3s infinite ease-in-out;
     }
 
-    .tarjeta {
-      background-color: var(--color-tarjeta);
-      border-radius: 16px;
-      width: 80px;
-      height: 100px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2.5em;
+    .card {
+      background: var(--accent);
+      color: var(--primary);
+      padding: 1rem;
+      font-size: 2.5rem;
+      border-radius: 10px;
+      min-width: 60px;
+      text-align: center;
       font-weight: bold;
-      color: white;
-      font-family: 'Poppins', sans-serif;
-      animation: glow 2s ease-in-out infinite;
+      transition: all 0.3s ease;
     }
 
-    .puntos {
-      font-size: 2.5em;
-      color: white;
-      font-weight: bold;
-      padding: 0 10px;
+    .colon {
+      color: var(--accent);
+      font-size: 2.5rem;
+      padding: 1rem 0;
     }
 
-    .ampm {
-      background-color: var(--color-tarjeta);
-      border-radius: 12px;
-      width: 60px;
+    .meridiem {
+      background: var(--secondary);
+      color: var(--text);
+      font-size: 1rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      align-self: center;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 10px var(--accent); }
+      50% { box-shadow: 0 0 20px var(--accent); }
+    }
+
+    .theme-button {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: var(--accent);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
       height: 40px;
+      cursor: pointer;
       display: flex;
-      justify-content: center;
       align-items: center;
-      font-size: 1em;
-      font-weight: bold;
-      font-family: 'Poppins', sans-serif;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 0 8px var(--accent);
     }
 
-    @keyframes glow {
-      0%, 100% {
-        box-shadow: 0 0 12px rgba(0, 206, 201, 0.4);
-      }
-      50% {
-        box-shadow: 0 0 24px rgba(0, 206, 201, 0.8);
-      }
+    .popup {
+      position: absolute;
+      bottom: 70px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid var(--accent);
+      padding: 1rem;
+      border-radius: 10px;
+      display: none;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .popup button {
+      background: none;
+      color: var(--text);
+      border: 1px solid var(--accent);
+      padding: 0.3rem 0.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+
+    .popup button:hover {
+      background: var(--accent);
+      color: var(--primary);
     }
   </style>
 </head>
 <body>
-
-  <div class="zonas-secundarias">
-    <div class="zona-secundaria">
-      Pacífico | Los Angeles<br><span id="pacifico">00:00:00 AM</span>
-    </div>
-    <div class="zona-secundaria">
-      Este | New York<br><span id="este">00:00:00 AM</span>
-    </div>
+  <div class="timezone-row">
+    <div class="timezone" id="pacific"></div>
+    <div class="timezone" id="eastern"></div>
   </div>
 
-  <div class="contenedor-central">
-    <div class="titulo-principal">Guatemala</div>
-    <div class="reloj-contenedor">
-      <div class="tarjeta" id="hora">00</div>
-      <div class="puntos">:</div>
-      <div class="tarjeta" id="minuto">00</div>
-      <div class="puntos">:</div>
-      <div class="tarjeta" id="segundo">00</div>
-      <div class="ampm" id="ampm">AM</div>
-    </div>
+  <h1 class="title" id="mainTitle">Guatemala</h1>
+  <div class="reloj-container" id="reloj">
+    <!-- Se llenará con JS -->
+  </div>
+
+  <button class="theme-button material-icons" onclick="togglePopup()">brush</button>
+  <div class="popup" id="themePopup">
+    <button onclick="applyTheme('default')">Default</button>
+    <button onclick="applyTheme('nes')">NES</button>
+    <button onclick="applyTheme('tron')">Tron</button>
+    <button onclick="applyTheme('solar')">Solar</button>
+    <button onclick="applyTheme('neon')">Neon</button>
+    <button onclick="applyTheme('pastel')">Pastel</button>
+    <button onclick="applyTheme('forest')">Forest</button>
+    <button onclick="applyTheme('candy')">Candy</button>
+    <button onclick="applyTheme('cyber')">Cyberpunk</button>
+    <button onclick="applyTheme('minimal')">Minimal</button>
   </div>
 
   <script>
-    function updateClocks() {
-      const zonas = {
-        guatemala: 'America/Guatemala',
-        pacifico: 'America/Los_Angeles',
-        este: 'America/New_York'
-      };
-
-      const format = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-
-      const ahoraGuate = new Intl.DateTimeFormat('es-ES', { ...format, timeZone: zonas.guatemala }).format(new Date());
-      const [hGuate, mGuate, sGuate, ampmGuate] = ahoraGuate.replace(/:/g, ' ').split(' ');
-
-      document.getElementById('hora').textContent = hGuate;
-      document.getElementById('minuto').textContent = mGuate;
-      document.getElementById('segundo').textContent = sGuate;
-      document.getElementById('ampm').textContent = ampmGuate;
-
-      const pac = new Intl.DateTimeFormat('es-ES', { ...format, timeZone: zonas.pacifico }).format(new Date());
-      const est = new Intl.DateTimeFormat('es-ES', { ...format, timeZone: zonas.este }).format(new Date());
-
-      document.getElementById('pacifico').textContent = pac;
-      document.getElementById('este').textContent = est;
+    function formatTime(date, tz) {
+      return new Intl.DateTimeFormat('en-US', {
+        timeZone: tz,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      }).format(date);
     }
 
-    setInterval(updateClocks, 1000);
-    updateClocks();
-  </script>
+    function updateClock() {
+      const now = new Date();
+      const [time, ampm] = formatTime(now, 'America/Guatemala').split(' ');
+      const [hh, mm, ss] = time.split(':');
 
+      const reloj = document.getElementById("reloj");
+      reloj.innerHTML = `
+        <div class="card">${hh}</div>
+        <div class="colon">:</div>
+        <div class="card">${mm}</div>
+        <div class="colon">:</div>
+        <div class="card">${ss}</div>
+        <div class="meridiem">${ampm}</div>
+      `;
+
+      document.getElementById("pacific").textContent = `Pacífico | Los Angeles: ${formatTime(now, 'America/Los_Angeles')}`;
+      document.getElementById("eastern").textContent = `Este | New York: ${formatTime(now, 'America/New_York')}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function togglePopup() {
+      const popup = document.getElementById("themePopup");
+      popup.style.display = popup.style.display === "flex" ? "none" : "flex";
+    }
+
+    function applyTheme(theme) {
+      const root = document.documentElement;
+      const title = document.getElementById("mainTitle");
+
+      const themes = {
+        default: {
+          '--primary': '#222',
+          '--accent': '#00f0ff',
+          '--text': '#fff',
+          '--font-main': `'Share Tech Mono', monospace`,
+          '--font-title': `'Orbitron', sans-serif`
+        },
+        nes: {
+          '--primary': '#000',
+          '--accent': '#fff',
+          '--text': '#00ff00',
+          '--font-main': `'Press Start 2P', cursive`,
+          '--font-title': `'Press Start 2P', cursive`
+        },
+        tron: {
+          '--primary': '#000',
+          '--accent': '#00f0ff',
+          '--text': '#00f0ff',
+          '--font-main': `'Orbitron', sans-serif`,
+          '--font-title': `'Tron', sans-serif`
+        },
+        solar: {
+          '--primary': '#002b36',
+          '--accent': '#b58900',
+          '--text': '#fdf6e3',
+          '--font-main': `'Share Tech Mono', monospace`,
+          '--font-title': `'Orbitron', sans-serif`
+        },
+        neon: {
+          '--primary': '#0f0f0f',
+          '--accent': '#ff00cc',
+          '--text': '#fff',
+          '--font-main': `'Orbitron', sans-serif`,
+          '--font-title': `'Orbitron', sans-serif`
+        },
+        pastel: {
+          '--primary': '#f2f2f2',
+          '--accent': '#ffb6c1',
+          '--text': '#333',
+          '--font-main': `'Share Tech Mono', monospace`,
+          '--font-title': `'Share Tech Mono', monospace`
+        },
+        forest: {
+          '--primary': '#1b3022',
+          '--accent': '#6eff7b',
+          '--text': '#e5ffe5',
+          '--font-main': `'Share Tech Mono', monospace`,
+          '--font-title': `'Orbitron', sans-serif`
+        },
+        candy: {
+          '--primary': '#ffe4f2',
+          '--accent': '#ff69b4',
+          '--text': '#5e005e',
+          '--font-main': `'Orbitron', sans-serif`,
+          '--font-title': `'Orbitron', sans-serif`
+        },
+        cyber: {
+          '--primary': '#121212',
+          '--accent': '#ff0099',
+          '--text': '#e0e0e0',
+          '--font-main': `'Orbitron', sans-serif`,
+          '--font-title': `'Orbitron', sans-serif`
+        },
+        minimal: {
+          '--primary': '#ffffff',
+          '--accent': '#000000',
+          '--text': '#000000',
+          '--font-main': `'Share Tech Mono', monospace`,
+          '--font-title': `'Share Tech Mono', monospace`
+        }
+      };
+
+      const selected = themes[theme] || themes.default;
+      for (let key in selected) {
+        root.style.setProperty(key, selected[key]);
+      }
+
+      // Tarjetas estilo Tron
+      const cards = document.querySelectorAll('.card');
+      if (theme === 'tron') {
+        cards.forEach(card => {
+          card.style.background = 'transparent';
+          card.style.border = '1px solid var(--accent)';
+          card.style.color = 'var(--accent)';
+        });
+      } else {
+        cards.forEach(card => {
+          card.style.background = 'var(--accent)';
+          card.style.border = 'none';
+          card.style.color = 'var(--primary)';
+        });
+      }
+
+      togglePopup();
+    }
+  </script>
 </body>
 </html>
