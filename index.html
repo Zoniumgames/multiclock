@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MultiClock</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <title>Reloj Futurista</title>
   <link rel="icon" href="https://i.pinimg.com/736x/78/37/a7/7837a726900c275f04b417187e95e46a.jpg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --color-tarjeta: #00cec9;
@@ -34,6 +34,7 @@
       gap: 80px;
       font-size: 0.85em;
       color: var(--color-texto-secundario);
+      z-index: 1;
     }
 
     .zona-secundaria {
@@ -48,13 +49,21 @@
       font-family: 'Poppins', sans-serif;
     }
 
+    .contenedor-central {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 0;
+    }
+
     .titulo-principal {
-      margin-top: 100px;
-      margin-bottom: 20px;
       font-size: 2em;
       font-family: 'Orbitron', sans-serif;
       color: white;
       letter-spacing: 1px;
+      margin-bottom: 20px;
     }
 
     .reloj-contenedor {
@@ -70,7 +79,6 @@
     .tarjeta {
       background-color: var(--color-tarjeta);
       border-radius: 16px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
       width: 80px;
       height: 100px;
       display: flex;
@@ -80,6 +88,7 @@
       font-weight: bold;
       color: white;
       font-family: 'Poppins', sans-serif;
+      animation: glow 2s ease-in-out infinite;
     }
 
     .puntos {
@@ -97,10 +106,18 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-left: 10px;
       font-size: 1em;
       font-weight: bold;
       font-family: 'Poppins', sans-serif;
+    }
+
+    @keyframes glow {
+      0%, 100% {
+        box-shadow: 0 0 12px rgba(0, 206, 201, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 24px rgba(0, 206, 201, 0.8);
+      }
     }
   </style>
 </head>
@@ -108,22 +125,23 @@
 
   <div class="zonas-secundarias">
     <div class="zona-secundaria">
-      Pacífico<br><span id="pacifico">00:00:00 AM</span>
+      Pacífico | Los Angeles<br><span id="pacifico">00:00:00 AM</span>
     </div>
     <div class="zona-secundaria">
-      Este<br><span id="este">00:00:00 AM</span>
+      Este | New York<br><span id="este">00:00:00 AM</span>
     </div>
   </div>
 
-  <div class="titulo-principal">Guatemala</div>
-
-  <div class="reloj-contenedor">
-    <div class="tarjeta" id="hora">00</div>
-    <div class="puntos">:</div>
-    <div class="tarjeta" id="minuto">00</div>
-    <div class="puntos">:</div>
-    <div class="tarjeta" id="segundo">00</div>
-    <div class="ampm" id="ampm">AM</div>
+  <div class="contenedor-central">
+    <div class="titulo-principal">Guatemala</div>
+    <div class="reloj-contenedor">
+      <div class="tarjeta" id="hora">00</div>
+      <div class="puntos">:</div>
+      <div class="tarjeta" id="minuto">00</div>
+      <div class="puntos">:</div>
+      <div class="tarjeta" id="segundo">00</div>
+      <div class="ampm" id="ampm">AM</div>
+    </div>
   </div>
 
   <script>
