@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ES">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,22 +8,21 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- Fuentes -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Press+Start+2P&family=Share+Tech+Mono&family=VT323&family=Monoton&family=Pacifico&family=Raleway:wght@700&family=Bebas+Neue&family=Rubik+Mono+One&family=Zilla+Slab:wght@700&family=Cinzel:wght@700&family=Audiowide&family=Fredericka+the+Great&display=swap" rel="stylesheet">
   <link href="https://fonts.cdnfonts.com/css/tron" rel="stylesheet">
 
   <style>
     :root {
       --primary: #222;
-      --secondary: #444;
       --accent: #00f0ff;
       --text: #fff;
       --font-main: 'Share Tech Mono', monospace;
       --font-title: 'Orbitron', sans-serif;
+      --bg-gradient: none;
     }
 
     body {
       margin: 0;
-      background: var(--primary);
       color: var(--text);
       font-family: var(--font-main);
       display: flex;
@@ -32,7 +31,9 @@
       justify-content: center;
       height: 100vh;
       overflow: hidden;
-      position: relative;
+      background: var(--primary);
+      background-image: var(--bg-gradient);
+      background-size: cover;
       transition: background 0.5s ease;
     }
 
@@ -41,7 +42,7 @@
       top: 20px;
       display: flex;
       gap: 1rem;
-      font-size: 0.9rem;
+      font-size: 1rem;
       opacity: 0.8;
     }
 
@@ -49,7 +50,6 @@
       background: rgba(0, 0, 0, 0.3);
       padding: 0.3rem 0.6rem;
       border-radius: 10px;
-      font-size: 0.8rem;
       backdrop-filter: blur(4px);
     }
 
@@ -58,7 +58,7 @@
       margin: 0.5rem 0;
       font-size: 1.8rem;
       color: var(--accent);
-      transition: font-family 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     .reloj-container {
@@ -91,8 +91,8 @@
     }
 
     .meridiem {
-      background: var(--secondary);
-      color: var(--text);
+      background: var(--primary);
+      color: var(--accent);
       font-size: 1rem;
       padding: 0.5rem;
       border-radius: 8px;
@@ -132,6 +132,8 @@
       display: none;
       flex-direction: column;
       gap: 0.5rem;
+      max-height: 300px;
+      overflow-y: auto;
     }
 
     .popup button {
@@ -158,25 +160,105 @@
   </div>
 
   <h1 class="title" id="mainTitle">Guatemala</h1>
-  <div class="reloj-container" id="reloj">
-    <!-- Se llenará con JS -->
-  </div>
+  <div class="reloj-container" id="reloj"></div>
 
   <button class="theme-button material-icons" onclick="togglePopup()">brush</button>
-  <div class="popup" id="themePopup">
-    <button onclick="applyTheme('default')">Default</button>
-    <button onclick="applyTheme('nes')">NES</button>
-    <button onclick="applyTheme('tron')">Tron</button>
-    <button onclick="applyTheme('solar')">Solar</button>
-    <button onclick="applyTheme('neon')">Neon</button>
-    <button onclick="applyTheme('pastel')">Pastel</button>
-    <button onclick="applyTheme('forest')">Forest</button>
-    <button onclick="applyTheme('candy')">Candy</button>
-    <button onclick="applyTheme('cyber')">Cyberpunk</button>
-    <button onclick="applyTheme('minimal')">Minimal</button>
-  </div>
+  <div class="popup" id="themePopup"></div>
 
   <script>
+    const themes = {
+      default: {
+        '--primary': '#222', '--accent': '#00f0ff', '--text': '#fff',
+        '--font-main': `'Share Tech Mono', monospace`, '--font-title': `'Orbitron', sans-serif`, '--bg-gradient': 'none'
+      },
+      tron: {
+        '--primary': '#000', '--accent': '#00f0ff', '--text': '#00f0ff',
+        '--font-main': `'Orbitron', sans-serif`, '--font-title': `'Tron', sans-serif`, '--bg-gradient': 'none'
+      },
+      nes: {
+        '--primary': '#000', '--accent': '#fff', '--text': '#00ff00',
+        '--font-main': `'Press Start 2P', cursive`, '--font-title': `'Press Start 2P', cursive`, '--bg-gradient': 'none'
+      },
+      pastel: {
+        '--primary': '#f2f2f2', '--accent': '#ffb6c1', '--text': 'white',
+        '--font-main': `'Pacifico', cursive`, '--font-title': `'Pacifico', cursive`,
+        '--bg-gradient': 'linear-gradient(120deg, #ffe0e0, #e0ffff)'
+      },
+      neon: {
+        '--primary': '#0f0f0f', '--accent': '#ff00cc', '--text': '#fff',
+        '--font-main': `'Monoton', cursive`, '--font-title': `'Monoton', cursive`,
+        '--bg-gradient': 'linear-gradient(135deg, #000000, #1a0033)'
+      },
+      vaporwave: {
+        '--primary': '#2e003e', '--accent': '#ff69b4', '--text': '#fff',
+        '--font-main': `'VT323', monospace`, '--font-title': `'VT323', monospace`,
+        '--bg-gradient': 'linear-gradient(to right, #ffafbd, #ffc3a0)'
+      },
+      candy: {
+        '--primary': '#ffe4f2', '--accent': '#ff69b4', '--text': '#fff',
+        '--font-main': `'Bebas Neue', cursive`, '--font-title': `'Bebas Neue', cursive`,
+        '--bg-gradient': 'linear-gradient(145deg, #ffd6ec, #ffdde1)'
+      },
+      solar: {
+        '--primary': '#002b36', '--accent': '#b58900', '--text': '#fdf6e3',
+        '--font-main': `'Zilla Slab', serif`, '--font-title': `'Zilla Slab', serif`, '--bg-gradient': 'none'
+      },
+      forest: {
+        '--primary': '#1b3022', '--accent': '#6eff7b', '--text': '#e5ffe5',
+        '--font-main': `'Raleway', sans-serif`, '--font-title': `'Raleway', sans-serif`,
+        '--bg-gradient': 'linear-gradient(to right, #2e8b57, #3cb371)'
+      },
+      cyber: {
+        '--primary': '#121212', '--accent': '#ff0099', '--text': '#e0e0e0',
+        '--font-main': `'Rubik Mono One', sans-serif`, '--font-title': `'Rubik Mono One', sans-serif`,
+        '--bg-gradient': 'linear-gradient(to bottom, #1a1a1a, #000000)'
+      },
+      // 10 temas adicionales como gothic, minimal, metallic, royal, ocean, lava, desert, sky, jungle, pixel:
+      gothic: { '--primary': '#0c0c0c', '--accent': '#9932cc', '--text': '#fff', '--font-main': `'Cinzel', serif`, '--font-title': `'Cinzel', serif`, '--bg-gradient': 'none' },
+      minimal: { '--primary': '#ffffff', '--accent': '#000000', '--text': 'white', '--font-main': `'Share Tech Mono', monospace`, '--font-title': `'Share Tech Mono', monospace`, '--bg-gradient': 'none' },
+      metallic: { '--primary': '#2a2a2a', '--accent': '#c0c0c0', '--text': '#e0e0e0', '--font-main': `'Audiowide', cursive`, '--font-title': `'Audiowide', cursive`, '--bg-gradient': 'linear-gradient(to right, #434343, #000000)' },
+      royal: { '--primary': '#290025', '--accent': '#ffd700', '--text': '#fff8dc', '--font-main': `'Fredericka the Great', cursive`, '--font-title': `'Fredericka the Great', cursive`, '--bg-gradient': 'linear-gradient(45deg, #4b006e, #000)' },
+      ocean: { '--primary': '#002b5c', '--accent': '#00cfff', '--text': '#e0f7fa', '--font-main': `'Orbitron', sans-serif`, '--font-title': `'Orbitron', sans-serif`, '--bg-gradient': 'linear-gradient(to right, #005377, #00bfff)' },
+      lava: { '--primary': '#330000', '--accent': '#ff4500', '--text': '#ffe4c4', '--font-main': `'VT323', monospace`, '--font-title': `'VT323', monospace`, '--bg-gradient': 'linear-gradient(to right, #ff0000, #8b0000)' },
+      desert: { '--primary': '#f4a460', '--accent': '#8b4513', '--text': 'white', '--font-main': `'Zilla Slab', serif`, '--font-title': `'Zilla Slab', serif`, '--bg-gradient': 'linear-gradient(to right, #f4e2d8, #ba8b02)' },
+      sky: { '--primary': '#87ceeb', '--accent': '#1e90ff', '--text': '#ffffff', '--font-main': `'Raleway', sans-serif`, '--font-title': `'Raleway', sans-serif`, '--bg-gradient': 'linear-gradient(to bottom, #87ceeb, #1e90ff)' },
+      jungle: { '--primary': '#355e3b', '--accent': '#a2d729', '--text': '#fff', '--font-main': `'Rubik Mono One', sans-serif`, '--font-title': `'Rubik Mono One', sans-serif`, '--bg-gradient': 'linear-gradient(to right, #4caf50, #2e7d32)' },
+      pixel: { '--primary': '#111', '--accent': '#ffcc00', '--text': '#ff0', '--font-main': `'Press Start 2P', cursive`, '--font-title': `'Press Start 2P', cursive`, '--bg-gradient': 'none' }
+    };
+
+    const themePopup = document.getElementById("themePopup");
+    Object.keys(themes).forEach(name => {
+      const btn = document.createElement("button");
+      btn.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+      btn.onclick = () => applyTheme(name);
+      themePopup.appendChild(btn);
+    });
+
+    function togglePopup() {
+      themePopup.style.display = themePopup.style.display === "flex" ? "none" : "flex";
+    }
+
+    function applyTheme(name) {
+      const root = document.documentElement;
+      const theme = themes[name];
+      Object.entries(theme).forEach(([k, v]) => root.style.setProperty(k, v));
+      const cards = document.querySelectorAll('.card');
+      if (name === 'tron') {
+        cards.forEach(card => {
+          card.style.background = 'transparent';
+          card.style.border = '1px solid var(--accent)';
+          card.style.color = 'var(--accent)';
+        });
+      } else {
+        cards.forEach(card => {
+          card.style.background = 'var(--accent)';
+          card.style.border = 'none';
+          card.style.color = 'var(--primary)';
+        });
+      }
+      
+    }
+
     function formatTime(date, tz) {
       return new Intl.DateTimeFormat('en-US', {
         timeZone: tz,
@@ -191,129 +273,20 @@
       const now = new Date();
       const [time, ampm] = formatTime(now, 'America/Guatemala').split(' ');
       const [hh, mm, ss] = time.split(':');
-
-      const reloj = document.getElementById("reloj");
-      reloj.innerHTML = `
+      document.getElementById("reloj").innerHTML = `
         <div class="card">${hh}</div>
         <div class="colon">:</div>
         <div class="card">${mm}</div>
         <div class="colon">:</div>
         <div class="card">${ss}</div>
-        <div class="meridiem">${ampm}</div>
-      `;
-
-      document.getElementById("pacific").textContent = `Pacífico | Los Angeles: ${formatTime(now, 'America/Los_Angeles')}`;
-      document.getElementById("eastern").textContent = `Este | New York: ${formatTime(now, 'America/New_York')}`;
+        <div class="meridiem">${ampm}</div>`;
+      document.getElementById("pacific").textContent = `Pacific | Los Angeles: ${formatTime(now, 'America/Los_Angeles')}`;
+      document.getElementById("eastern").textContent = `East | New York: ${formatTime(now, 'America/New_York')}`;
     }
 
     setInterval(updateClock, 1000);
     updateClock();
-
-    function togglePopup() {
-      const popup = document.getElementById("themePopup");
-      popup.style.display = popup.style.display === "flex" ? "none" : "flex";
-    }
-
-    function applyTheme(theme) {
-      const root = document.documentElement;
-      const title = document.getElementById("mainTitle");
-
-      const themes = {
-        default: {
-          '--primary': '#222',
-          '--accent': '#00f0ff',
-          '--text': '#fff',
-          '--font-main': `'Share Tech Mono', monospace`,
-          '--font-title': `'Orbitron', sans-serif`
-        },
-        nes: {
-          '--primary': '#000',
-          '--accent': '#fff',
-          '--text': '#00ff00',
-          '--font-main': `'Press Start 2P', cursive`,
-          '--font-title': `'Press Start 2P', cursive`
-        },
-        tron: {
-          '--primary': '#000',
-          '--accent': '#00f0ff',
-          '--text': '#00f0ff',
-          '--font-main': `'Orbitron', sans-serif`,
-          '--font-title': `'Tron', sans-serif`
-        },
-        solar: {
-          '--primary': '#002b36',
-          '--accent': '#b58900',
-          '--text': '#fdf6e3',
-          '--font-main': `'Share Tech Mono', monospace`,
-          '--font-title': `'Orbitron', sans-serif`
-        },
-        neon: {
-          '--primary': '#0f0f0f',
-          '--accent': '#ff00cc',
-          '--text': '#fff',
-          '--font-main': `'Orbitron', sans-serif`,
-          '--font-title': `'Orbitron', sans-serif`
-        },
-        pastel: {
-          '--primary': '#f2f2f2',
-          '--accent': '#ffb6c1',
-          '--text': '#333',
-          '--font-main': `'Share Tech Mono', monospace`,
-          '--font-title': `'Share Tech Mono', monospace`
-        },
-        forest: {
-          '--primary': '#1b3022',
-          '--accent': '#6eff7b',
-          '--text': '#e5ffe5',
-          '--font-main': `'Share Tech Mono', monospace`,
-          '--font-title': `'Orbitron', sans-serif`
-        },
-        candy: {
-          '--primary': '#ffe4f2',
-          '--accent': '#ff69b4',
-          '--text': '#5e005e',
-          '--font-main': `'Orbitron', sans-serif`,
-          '--font-title': `'Orbitron', sans-serif`
-        },
-        cyber: {
-          '--primary': '#121212',
-          '--accent': '#ff0099',
-          '--text': '#e0e0e0',
-          '--font-main': `'Orbitron', sans-serif`,
-          '--font-title': `'Orbitron', sans-serif`
-        },
-        minimal: {
-          '--primary': '#ffffff',
-          '--accent': '#000000',
-          '--text': '#000000',
-          '--font-main': `'Share Tech Mono', monospace`,
-          '--font-title': `'Share Tech Mono', monospace`
-        }
-      };
-
-      const selected = themes[theme] || themes.default;
-      for (let key in selected) {
-        root.style.setProperty(key, selected[key]);
-      }
-
-      // Tarjetas estilo Tron
-      const cards = document.querySelectorAll('.card');
-      if (theme === 'tron') {
-        cards.forEach(card => {
-          card.style.background = 'transparent';
-          card.style.border = '1px solid var(--accent)';
-          card.style.color = 'var(--accent)';
-        });
-      } else {
-        cards.forEach(card => {
-          card.style.background = 'var(--accent)';
-          card.style.border = 'none';
-          card.style.color = 'var(--primary)';
-        });
-      }
-
-      togglePopup();
-    }
+    applyTheme('default');
   </script>
 </body>
 </html>
