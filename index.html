@@ -11,13 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Press+Start+2P&family=Share+Tech+Mono&family=VT323&family=Monoton&family=Pacifico&family=Raleway:wght@700&family=Bebas+Neue&family=Rubik+Mono+One&family=Zilla+Slab:wght@700&family=Cinzel:wght@700&family=Audiowide&family=Fredericka+the+Great&display=swap" rel="stylesheet">
 
   <style>
-
-@font-face {
-  font-family: 'TR2N';  /* Nombre de la fuente */
-  src: url('Tr2n.ttf') format('truetype');  /* Ruta del archivo .ttf */
-  font-weight: normal;
-  font-style: normal;
-}
     
     :root {
       --primary: #222;
@@ -158,6 +151,46 @@
       background: var(--accent);
       color: var(--primary);
     }
+    
+     .popup button:active {
+      transform: scale(1.1);
+    }
+    
+    .title.tron {
+    font-family: var(--font-title); /* Asegura usar el font correcto */
+    color: rgba(0, 0, 0, 0.2); /* Un poco de relleno */
+   font-size: 4rem; /* Aumenta este valor a tu gusto*/
+text-shadow: 
+        0 0 4px rgba(0, 240, 255, 0.3),
+        0 0 8px rgba(0, 240, 255, 0.3),
+        0 0 12px rgba(0, 240, 255, 0.2),
+        0 0 20px rgba(0, 240, 255, 0.2),
+        0 0 40px rgba(0, 240, 255, 0.15);
+    -webkit-text-stroke: 1px var(--accent);
+}
+
+
+.letter {
+  display: inline-block;
+}
+
+.flicker {
+  animation: flickerAnimation 2.5s infinite;
+}
+
+@keyframes flickerAnimation {
+  0%   { opacity: 1; }
+  5%   { opacity: 0.4; }
+  10%  { opacity: 1; }
+  15%  { opacity: 0.2; }
+  20%  { opacity: 1; }
+  30%  { opacity: 0.8; }
+  40%  { opacity: 0.1; }
+  50%  { opacity: 1; }
+  60%  { opacity: 0.5; }
+  80%  { opacity: 1; }
+  100% { opacity: 1; }
+}
   </style>
 </head>
 <body>
@@ -180,7 +213,8 @@
       },
       tron: {
         '--primary': '#000', '--accent': '#00f0ff', '--text': '#00f0ff',
-        '--font-main': `'Orbitron', sans-serif`, '--font-title': `'Tr2n', sans-serif`, '--bg-gradient': 'none'
+        '--font-main': `'Orbitron', sans-serif`, '--font-title': `'Orbitron', sans-serif`, '--bg-gradient': 'none',
+        '--title-size': '10rem'
       },
       nes: {
         '--primary': '#000', '--accent': '#fff', '--text': '#00ff00',
@@ -246,26 +280,51 @@
     }
 
     function applyTheme(name) {
-      const root = document.documentElement;
-      const theme = themes[name];
-      Object.entries(theme).forEach(([k, v]) => root.style.setProperty(k, v));
-      const cards = document.querySelectorAll('.card');
-      if (name === 'tron') {
-        cards.forEach(card => {
-          card.style.background = 'transparent';
-          card.style.border = '1px solid var(--accent)';
-          card.style.color = 'var(--accent)';
-        });
-      } else {
-        cards.forEach(card => {
-          card.style.background = 'var(--accent)';
-          card.style.border = 'none';
-          card.style.color = 'var(--primary)';
-        });
-      }
-      
-    }
+    const root = document.documentElement;
+    const theme = themes[name];
+    
+    Object.entries(theme).forEach(([k, v]) => root.style.setProperty(k, v));
+    
+    const cards = document.querySelectorAll('.card');
+    const title = document.getElementById("mainTitle");
 
+    // Obtener valor computado de --accent
+    const accent = getComputedStyle(root).getPropertyValue('--accent').trim();
+    const primary = getComputedStyle(root).getPropertyValue('--primary').trim();
+    
+    if (name === 'tron') {
+        cards.forEach(card => {
+            card.style.background = 'transparent';
+            card.style.border = `1px solid ${accent}`;
+            card.style.color = accent;
+        });
+        title.classList.add('tron');
+    } else {
+        cards.forEach(card => {
+            card.style.background = accent;
+            card.style.border = 'none';
+            card.style.color = primary;
+        });
+        title.classList.remove('tron');
+    }
+    
+    if (name === 'tron') {
+    applyFlickerEffect();
+    title.classList.add('tron');
+} else {
+    title.innerHTML = 'Guatemala'; // Restauramos el texto normal
+    title.classList.remove('tron');
+}
+
+
+document.querySelectorAll('.popup button').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.toLowerCase() === name.toLowerCase()) {
+            btn.classList.add('active');
+        }
+    });
+}
+    
     function formatTime(date, tz) {
       return new Intl.DateTimeFormat('en-US', {
         timeZone: tz,
@@ -294,6 +353,26 @@
     setInterval(updateClock, 1000);
     updateClock();
     applyTheme('default');
+    
+    function applyFlickerEffect() {
+    const title = document.getElementById("mainTitle");
+    const text = title.textContent;
+    title.innerHTML = '';
+
+    for (let i = 0; i < text.length; i++) {
+        const span = document.createElement('span');
+        span.classList.add('letter');
+        span.textContent = text[i];
+
+        // Aleatoriamente le damos clase "flicker" a algunas letras
+        if (Math.random() < 0.3 && text[i] !== ' ') {
+            span.classList.add('flicker');
+        }
+
+        title.appendChild(span);
+    }
+}
   </script>
+  <!--Coded by Geovanni Ramos-->
 </body>
 </html>
