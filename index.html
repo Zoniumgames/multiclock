@@ -191,16 +191,205 @@ text-shadow:
   80%  { opacity: 1; }
   100% { opacity: 1; }
 }
+
+/* Botón flotante para abrir */
+#openTab {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #111;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#openTab:hover {
+  background: #333;
+}
+
+/* Estilo de la pestaña estilo glass */
+#timeTab {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2);
+  color: #fff;
+  z-index: 999;
+  transform: translateY(-100%);
+  transition: transform 0.6s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  backdrop-filter: blur(20px);
+}
+
+/* Mostrar pestaña */
+#timeTab.show {
+  transform: translateY(0%);
+}
+
+/* Botón dentro de la pestaña */
+#timeTab #toggleTab {
+  margin-top: auto;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background: #111;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Contenedor de las horas */
+.time-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.zone {
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding-bottom: 5px;
+  position: relative;
+  margin: 10px;
+}
+
+/* Línea de color debajo */
+.zone::after {
+  content: "";
+  display: block;
+  height: 4px;
+  margin-top: 6px;
+  border-radius: 4px;
+}
+.zone.pacific::after { background: orange; }
+.zone.mountain::after { background: green; }
+.zone.central::after  { background: yellow; }
+.zone.eastern::after  { background: red; }
+
+/* Mapa */
+.map-container {
+  width: 100%;
+  max-width: 1000px;
+  padding: 10px;
+}
+.map-container img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+
+  .clock {
+    display: flex;
+    gap: 5px;
+    font-size: 2rem;
+    align-items: center;
+  }
+  .card {
+    padding: 10px;
+    background: #111;
+    color: white;
+    border-radius: 10px;
+    min-width: 30px;
+    text-align: center;
+  }
+  .colon {
+    background: transparent;
+    font-weight: bold;
+  }
+  .ampm {
+    font-size: 1.2rem;
+    margin-left: 10px;
+  }
+  .tab {
+    display: none;
+    margin-top: 20px;
+    padding: 10px;
+    background: #222;
+    color: white;
+    border-radius: 10px;
+  }
+  .tab.show {
+    display: block;
+  }
+
+
+
+
+.tarjeta {
+  font-family: var(--font-title);
+  display: inline-block;
+  background-color: var(--accent);
+  color: var(--primary);
+  font-size: 2.5rem;
+  padding: 1rem 1.5rem;
+  margin: 0.5rem;
+  border-radius: 1.2rem;
+  text-align: center;
+  min-width: 4rem;
+  box-shadow: 0 0 10px rgba(255,255,255,0.15);
+}
+
+.tarjeta.ampm {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--primary);
+  color: var(--accent);
+  text-align: center;
+  align-content: center;
+}
+
   </style>
 </head>
 <body>
-  <div class="timezone-row">
-    <div class="timezone" id="pacific"></div>
-    <div class="timezone" id="eastern"></div>
+<!-- Panel de zona horaria -->
+<div id="timeTab" class="hidden">
+  <div class="time-header">
+    <div class="zone pacific">Pacífico: <span id="time-pacific">00:00:00</span></div>
+    <div class="zone mountain">Montaña: <span id="time-mountain">00:00:00</span></div>
+    <div class="zone central">Central: <span id="time-central">00:00:00</span></div>
+    <div class="zone eastern">Este: <span id="time-eastern">00:00:00</span></div>
   </div>
 
-  <h1 class="title" id="mainTitle">Guatemala</h1>
-  <div class="reloj-container" id="reloj"></div>
+  <div class="map-container">
+    <img src="tu-mapa.svg" alt="Mapa de Zonas Horarias" />
+  </div>
+
+  <!-- Botón para cerrar la pestaña -->
+  <button id="toggleTab">🔼 Cerrar</button>
+</div>
+
+<!-- Botón flotante inicial para abrir -->
+<button id="openTab">🕒 Ver Zonas Horarias</button>
+
+
+    <h1 class="title" id="mainTitle">Guatemala</h1>
+<div class="reloj-container" id="reloj">
+  <!-- Aquí están las tarjetas separadas para h1, h2, m1, m2, s1, s2, ampm -->
+  <!-- Ejemplo de estructura que ya tienes creada -->
+  <div class="tarjeta" id="hora">12</div>
+<div class="tarjeta" id="minuto">34</div>
+<div class="tarjeta" id="segundo">56</div>
+<div class="tarjeta ampm" id="ampm">PM</div>
+</div>
+
 
   <button class="theme-button material-icons" onclick="togglePopup()">brush</button>
   <div class="popup" id="themePopup"></div>
@@ -325,54 +514,84 @@ document.querySelectorAll('.popup button').forEach(btn => {
     });
 }
     
-    function formatTime(date, tz) {
-      return new Intl.DateTimeFormat('en-US', {
-        timeZone: tz,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true
-      }).format(date);
-    }
+  
 
-    function updateClock() {
-      const now = new Date();
-      const [time, ampm] = formatTime(now, 'America/Guatemala').split(' ');
-      const [hh, mm, ss] = time.split(':');
-      document.getElementById("reloj").innerHTML = `
-        <div class="card">${hh}</div>
-        <div class="colon">:</div>
-        <div class="card">${mm}</div>
-        <div class="colon">:</div>
-        <div class="card">${ss}</div>
-        <div class="meridiem">${ampm}</div>`;
-      document.getElementById("pacific").textContent = `Pacific | Los Angeles: ${formatTime(now, 'America/Los_Angeles')}`;
-      document.getElementById("eastern").textContent = `East | New York: ${formatTime(now, 'America/New_York')}`;
-    }
-
-    setInterval(updateClock, 1000);
-    updateClock();
-    applyTheme('default');
-    
-    function applyFlickerEffect() {
-    const title = document.getElementById("mainTitle");
-    const text = title.textContent;
-    title.innerHTML = '';
-
-    for (let i = 0; i < text.length; i++) {
-        const span = document.createElement('span');
-        span.classList.add('letter');
-        span.textContent = text[i];
-
-        // Aleatoriamente le damos clase "flicker" a algunas letras
-        if (Math.random() < 0.3 && text[i] !== ' ') {
-            span.classList.add('flicker');
-        }
-
-        title.appendChild(span);
-    }
+function generarTarjetasReloj() {
+  const reloj = document.getElementById("reloj");
+  reloj.innerHTML = `
+    <div id="hora" class="tarjeta"></div>
+    <div id="minuto" class="tarjeta"></div>
+    <div id="segundo" class="tarjeta"></div>
+    <div id="ampm" class="tarjeta ampm"></div>
+  `;
 }
+
+function actualizarHoraGuatemala() {
+  const ahora = new Date();
+  const opciones = {
+    timeZone: 'America/Guatemala',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+  };
+  const horaFormateada = ahora.toLocaleTimeString('en-US', opciones); // ejemplo: "01:23:45 PM"
+  const [hora, minuto, segundo] = horaFormateada.match(/\d{2}/g);
+  const ampm = horaFormateada.includes('AM') ? 'AM' : 'PM';
+
+  document.getElementById("hora").textContent = hora;
+  document.getElementById("minuto").textContent = minuto;
+  document.getElementById("segundo").textContent = segundo;
+  document.getElementById("ampm").textContent = ampm;
+}
+
+// Ejecutar al iniciar
+generarTarjetasReloj();
+actualizarHoraGuatemala();
+setInterval(actualizarHoraGuatemala, 1000);
+
   </script>
   <!--Coded by Geovanni Ramos-->
+  <script>
+const tab = document.getElementById('timeTab');
+const open = document.getElementById('openTab');
+const close = document.getElementById('toggleTab');
+
+open.addEventListener('click', () => {
+  tab.classList.add('show');
+  open.style.display = 'none';
+});
+close.addEventListener('click', () => {
+  tab.classList.remove('show');
+  open.style.display = 'block';
+});
+
+// Mostrar horas actualizadas
+function formatTime(date) {
+  return date.toLocaleTimeString('en-US', { hour12: false });
+}
+
+function updateTimes() {
+  const now = new Date();
+
+  const pacific = new Date(now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+  const mountain = new Date(now.toLocaleString("en-US", { timeZone: "America/Denver" }));
+  const central = new Date(now.toLocaleString("en-US", { timeZone: "America/Chicago" }));
+  const eastern = new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" }));
+
+  document.getElementById("time-pacific").textContent = formatTime(pacific);
+  document.getElementById("time-mountain").textContent = formatTime(mountain);
+  document.getElementById("time-central").textContent = formatTime(central);
+  document.getElementById("time-eastern").textContent = formatTime(eastern);
+}
+
+setInterval(updateTimes, 1000);
+updateTimes();
+
+
+
+
+
+</script>
 </body>
 </html>
