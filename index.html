@@ -356,6 +356,43 @@ text-shadow:
   align-content: center;
 }
 
+
+/* Contenedor del mapa (por si tienes uno) */
+#mapa-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#mapa-container iframe,
+#mapa-container img {
+  width: 100%;
+  height: auto;
+  max-height: 300px; /* Ajustable según ventana */
+  object-fit: cover;
+}
+
+/* En pantallas pequeñas, reduce el mapa */
+@media (max-width: 768px) {
+  #mapa-container iframe,
+  #mapa-container img {
+    max-height: 200px;
+  }
+}
+
+/* En pantallas muy pequeñas */
+@media (max-width: 480px) {
+  #mapa-container iframe,
+  #mapa-container img {
+    max-height: 150px;
+  }
+}
+
+
   </style>
 </head>
 <body>
