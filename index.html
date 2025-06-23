@@ -192,111 +192,6 @@ text-shadow:
   100% { opacity: 1; }
 }
 
-/* Botón flotante para abrir */
-#openTab {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  padding: 10px 20px;
-  font-size: 16px;
-  background: #111;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-#openTab:hover {
-  background: #333;
-}
-
-/* Estilo de la pestaña estilo glass */
-#timeTab {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh; /* Asegura que cubra toda la pantalla */
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  z-index: 999;
-  transform: translateY(-100%);
-  transition: transform 0.6s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between; /* centrado vertical */
-  padding: 0; /* sin padding vertical que corte cosas */
-  overflow: hidden;
-  padding: 0;
-}
-
-/* Mostrar pestaña */
-#timeTab.show {
-  transform: translateY(0%);
-}
-
-/* Botón dentro de la pestaña */
-#timeTab #toggleTab {
-  margin-top: auto;
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  background: #111;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  flex-shrink: 0;
-  margin-bottom: 10px;
-}
-
-/* Contenedor de las horas */
-.time-header {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-  margin-bottom: 20px;
-  text-align: center;
-  padding-block: 10px;
-  flex-shrink: 0;
-}
-
-.zone {
-  font-size: 1.4rem;
-  font-weight: bold;
-  padding-bottom: 5px;
-  position: relative;
-  margin: 10px;
-}
-
-/* Línea de color debajo */
-.zone::after {
-  content: "";
-  display: block;
-  height: 4px;
-  margin-top: 6px;
-  border-radius: 4px;
-}
-.zone.pacific::after { background: orange; }
-.zone.mountain::after { background: green; }
-.zone.central::after  { background: yellow; }
-.zone.eastern::after  { background: red; }
-
-/* Mapa */
-.map-container {
-  width: 100%;
-  max-width: 1000px;
-  padding: 10px;
-}
-.map-container img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-}
-
 
   .clock {
     display: flex;
@@ -357,83 +252,6 @@ text-shadow:
   text-align: center;
   align-content: center;
 }
-/* Estilo del panel oculto inicialmente */
-
-/* Al abrir la pestaña */
-.time-tab.visible {
-  transform: translateY(20px);
-}
-
-/* Botón flotante centrado arriba */
-#openTab {
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0.6rem 1.2rem;
-  border-radius: 50px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  border: none;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 1001;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-
-/* Botón cerrar dentro del panel */
-#toggleTab {
-  margin-top: 1rem;
-  padding: 0.4rem 1rem;
-  border-radius: 1rem;
-  background-color: rgba(0, 0, 0, 0.3);
-  border: none;
-  color: white;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  flex-shrink: 0;
-  margin-bottom: 10px;
-}
-
-/* Mapa responsivo */
-.map-container {
-  flex: 1;
-  width: 100%;
-  max-height: 100%;
-  max-width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-}
-.map-container img {
-  width: 100%;
-  height: auto;
-  max-height: 100%;
-  object-fit: contain;
-  transition: all 0.4s ease-in-out;
-}
-
-/* Responsivo */
-@media (max-width: 500px) {
-  .time-tab {
-    width: 95%;
-  }
-
-  .map-container {
-    max-height: 200px;
-  }
-}
-
-@media (max-width: 700px) {
-  .map-container img {
-    max-height: 40vh;
-    object-fit: contain;
-  }
-}
-
 
 html, body {
   height: 100vh;
@@ -441,6 +259,148 @@ html, body {
   padding: 0;
   overflow: hidden; /* Esto mantiene el scroll desactivado */
 }
+
+
+
+/* === ESTILOS PARA LA PESTAÑA DEL MAPA (REEMPLAZAR) === */
+
+/* Para un mejor manejo de tamaños, es una buena práctica */
+* {
+  box-sizing: border-box;
+}
+
+/* Botón flotante para abrir la pestaña */
+#openTab {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001; /* Asegúrate que esté por encima de la pestaña cuando está cerrada */
+  padding: 10px 20px;
+  font-size: 16px;
+  background: rgba(40, 40, 40, 0.7);
+  backdrop-filter: blur(5px);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.3s, opacity 0.5s;
+  opacity: 1; /* Aseguramos que sea visible */
+}
+
+/* Contenedor principal de la pestaña (Overlay) */
+#timeTab {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(20, 20, 20, 0.5); /* Un fondo un poco más oscuro */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px); /* Para Safari */
+  z-index: 1000;
+  
+  display: flex;
+  flex-direction: column; /* Apila los elementos verticalmente */
+  align-items: center;
+  
+  /* Permite el scroll vertical SOLO si el contenido es más alto que la pantalla */
+  overflow-y: auto; 
+  padding: 20px; /* Añade espacio alrededor para que no toque los bordes */
+
+  /* Animación de entrada/salida */
+  opacity: 0;
+  visibility: hidden; /* Oculta el elemento para accesibilidad */
+  transform: scale(0.95);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+}
+
+/* Estilo para mostrar la pestaña */
+#timeTab.show {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+/* Cabecera con las horas */
+.time-header {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Centra las zonas horarias */
+  flex-wrap: wrap; /* ¡CLAVE! Permite que los elementos pasen a la siguiente línea */
+  gap: 20px; /* Espacio entre los elementos de la hora */
+  flex-shrink: 0; /* Evita que la cabecera se encoja */
+  margin-bottom: 20px; /* Espacio antes del mapa */
+}
+
+/* Estilo individual para cada zona horaria */
+.zone {
+  font-size: clamp(1rem, 3vw, 1.4rem); /* Tamaño de fuente responsivo */
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 5px;
+  position: relative;
+  color: #fff;
+  text-shadow: 0 0 5px black;
+}
+
+/* Línea de color debajo de cada zona */
+.zone::after {
+  content: "";
+  display: block;
+  height: 4px;
+  margin: 6px auto 0;
+  width: 80%; /* Ancho de la línea */
+  border-radius: 4px;
+}
+.zone.pacific::after { background: #ff9900; }
+.zone.mountain::after { background: #33cc33; }
+.zone.central::after  { background: #ffcc00; }
+.zone.eastern::after  { background: #ff3333; }
+
+/* Contenedor del mapa */
+.map-container {
+  width: 100%;
+  max-width: 1200px; /* Límite para pantallas muy grandes */
+  flex-grow: 1; /* ¡CLAVE! Hace que este contenedor ocupe todo el espacio vertical sobrante */
+  display: flex; /* Para centrar la imagen dentro */
+  align-items: center;
+  justify-content: center;
+  min-height: 0; /* Truco de Flexbox para permitir que el contenedor se encoja correctamente */
+}
+
+/* La imagen del mapa */
+.map-container img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  object-fit: contain; /* ¡CLAVE! Asegura que la imagen quepa sin deformarse */
+  border-radius: 12px;
+}
+
+/* Botón para cerrar la pestaña */
+#toggleTab {
+  margin-top: 20px; /* Espacio después del mapa */
+  padding: 10px 25px;
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  cursor: pointer;
+  flex-shrink: 0; /* Evita que el botón se encoja */
+  transition: background 0.3s;
+}
+#toggleTab:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* 
+  NOTA: He eliminado las media queries que tenías porque este nuevo
+  enfoque con Flexbox es "intrínsecamente responsivo" y no las necesita.
+  El layout se adaptará fluidamente a cualquier tamaño de pantalla.
+*/
+
 
   </style>
 </head>
